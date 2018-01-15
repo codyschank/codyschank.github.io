@@ -1,0 +1,30 @@
+---
+title: "Dissertation Results"
+output: html_document
+---
+
+These are some results from my Dissertation. First, a map of habitat cores for Baird's Tapir.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+```
+
+```{r message=F, warning=F}
+library(leaflet)
+library(rgdal)
+library(raster)
+
+options(scipen = 999)
+
+cores =  readOGR(dsn="C://Users/Cody/Documents/cores.poly.shp",layer="cores.poly", verbose=F)
+cores_proj = spTransform(cores,crs("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"))
+
+m <- leaflet(cores_proj) %>% addTiles() %>%
+      addPolygons(color = "#444444", weight = 1, smoothFactor = 0.5, opacity = 1.0, fillOpacity = 0.5)
+
+m
+
+```
+
+There are `r round(sum(cores$sum, na.rm=T),0)` individuals in these cores.
+
